@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.fonte-xxl {
+  font: 700 4.5rem/1.35 "Inter", sans-serif;
+}
+
+.fonte-xl {
+  font: 700 1.75rem/1.35 "Inter", sans-serif;
+}
+
+.fonte-l {
+  font: 600 1.25rem/1.25 "Inter", sans-serif;
+}
+
+.fonte-m {
+  font: 400 1rem/1.25 "Inter", sans-serif;
+}
+
+.fonte-s {
+  font: 400 0.75rem/1.25 "Inter", sans-serif;
+}
+
+@media (max-width: 768px) {
+  .fonte-xxl {
+    font-size: 4rem;
+  }
+
+  .fonte-xl {
+    font-size: 1.5rem;
+  }
+
+  .fonte-l {
+    font-size: 1rem;
+  }
+
+  .fonte-m {
+    font-size: 0.875rem;
+  }
+
+  .fonte-s {
+    font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fonte-xxl {
+    font-size: 3.5rem;
+  }
+
+  .fonte-xl {
+    font-size: 1.25rem;
+  }
+
+  .fonte-l {
+    font-size: 0.875rem;
+  }
+
+  .fonte-m {
+    font-size: 0.75rem;
+  }
+
+  .fonte-s {
+    font-size: 0.5rem;
+  }
+}

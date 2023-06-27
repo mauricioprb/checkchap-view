@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+body {
+  margin: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+blockquote,
+dd {
+  margin: 0px;
+}
+
+ul {
+  padding: 0px;
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.botao {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--cor-branco);
+  background-color: var(--cor-principal-2);
+  font: 500 0.75rem/1.25 "Inter", sans-serif;
+  max-width: max-content;
+  border: none;
+  cursor: pointer;
+}
+
+.botao:hover {
+  background-color: var(--cor-principal-3);
+}
