@@ -1,8 +1,0 @@
-/* Globais */
-@import "./global/global.css";
-@import "./util/tipografia.css";
-@import "./util/cores.css";
-
-/* Páginas */
-@import "./pages/principal.css";
-@import "./pages/checklist.css";
