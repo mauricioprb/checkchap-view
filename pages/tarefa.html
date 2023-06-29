@@ -4,58 +4,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tarefa</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/@heroicons/vue@1.0.4/dist/heroicons.min.css" rel="stylesheet">
+  <title id="tituloPagina">CheckChap: Tarefa Criada com Sucesso!</title>
 </head>
 
 <body>
-  <div class="bg-gray-100 min-h-screen flex justify-center items-center">
-    <main class="bg-white md:w-1/2 lg:w-1/3 xl:w-1/3 p-8 rounded-md">
-      <div class="flex items-center mb-6">
-        <div class="flex-grow">
-          <input type="text" placeholder="Defina um título"
-            class="text-3xl font-medium rounded-md border-gray-300 p-2 focus:outline-none w-full">
-        </div>
-        <button class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700">Excluir lista</button>
-      </div>
-      <ul>
-        <li class="flex items-center mb-2 border-b border-gray-300 pb-2">
-          <input type="checkbox" id="item1" name="item1" class="mr-2">
-          <label for="item1" class="break-words flex-grow">Item 1</label>
-          <svg class="h-6 w-6 text-gray-500 ml-2 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M6.293 6.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 01-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" />
-          </svg>
-        </li>
-        <li class="flex items-center mb-2 border-b border-gray-300 pb-2">
-          <input type="checkbox" id="item2" name="item2" class="mr-2">
-          <label for="item2" class="break-words flex-grow">Item 2</label>
-          <svg class="h-6 w-6 text-gray-500 ml-2 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M6.293 6.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 01-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" />
-          </svg>
-        </li>
-        <li class="flex items-center mb-2 border-b border-gray-300 pb-2">
-          <input type="checkbox" id="item3" name="item3" class="mr-2">
-          <label for="item3" class="break-words flex-grow">Item 3</label>
-          <svg class="h-6 w-6 text-gray-500 ml-2 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M6.293 6.293a1 1 0 011.414 0L10 8.586l2.293-2.293a1 1 0 111.414 1.414L11.414 10l2.293 2.293a1 1 0 01-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 01-1.414-1.414L8.586 10 6.293 7.707a1 1 0 010-1.414z" />
-          </svg>
-        </li>
-      </ul>
-      <div class="flex items-center">
-        <svg class="h-6 w-6 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M10 3a1 1 0 01.993.883L11 4v5h5a1 1 0 01.117 1.993L16 11h-5v5a1 1 0 01-1.993.117L9 16v-5H4a1 1 0 01-.117-1.993L4 9h5V4a1 1 0 01.883-.993L10 3z"
-            clip-rule="evenodd" />
-        </svg>
-        <input placeholder="Adicionar item"
-          class="flex-grow rounded-md border-gray-300 p-2 focus:outline-none ml-2 placeholder-gray-500">
-      </div>
-    </main>
+  <div>
+    <h2 id="tituloLista" onclick="handleTituloClique()"></h2>
+    <div>
+      <input type="text" id="inputTitulo" placeholder="Definir título" onblur="handleTituloSair()"
+        onkeydown="handleTituloPressionarTecla()" />
+    </div>
+    <ul id="listaItens">
+    </ul>
+    <div>
+      <input id="inputItem" type="text" onkeydown="handleAdicionarItem(event)" placeholder="Adicionar item">
+    </div>
   </div>
+  <div>
+    <input type="text" id="inputUrl" readonly>
+    <button onclick="copiarUrl()">Copiar URL</button>
+  </div>
+  <script>
+    let editandoTitulo = false;
+    let titulo = '';
+    let itens = [];
+    let novoItem = '';
+
+    let elementoTituloPagina = document.getElementById('tituloPagina');
+    let elementoTituloLista = document.getElementById('tituloLista');
+    let elementoInputTitulo = document.getElementById('inputTitulo');
+    let elementoInputUrl = document.getElementById('inputUrl');
+
+    const handleTituloClique = () => {
+      editandoTitulo = true;
+      elementoTituloLista.style.display = 'none';
+      elementoInputTitulo.style.display = 'block';
+      elementoInputTitulo.value = titulo;
+      elementoInputTitulo.focus();
+    };
+
+    const handleTituloSair = () => {
+      editandoTitulo = false;
+      titulo = elementoInputTitulo.value;
+      elementoTituloPagina.innerHTML = titulo || 'Tarefa';
+      elementoTituloLista.innerHTML = titulo || 'Tarefa';
+      elementoTituloLista.style.display = 'block';
+      elementoInputTitulo.style.display = 'none';
+    };
+
+    const handleTituloPressionarTecla = (event) => {
+      if (event.key === 'Enter') {
+        handleTituloSair();
+      }
+    };
+
+    const handleAdicionarItem = (event) => {
+      if (event.key === 'Enter') {
+        let itemInput = document.getElementById('inputItem');
+        let textoItem = itemInput.value;
+        if (textoItem) {
+          let novoItem = { id: Date.now(), texto: textoItem };
+          itens.push(novoItem);
+          renderizarItens();
+          itemInput.value = '';
+        }
+      }
+    };
+
+    const handleExcluirItem = (itemId) => {
+      itens = itens.filter((item) => item.id !== itemId);
+      renderizarItens();
+    };
+
+    const renderizarItens = () => {
+      let listaItens = document.getElementById('listaItens');
+      listaItens.innerHTML = '';
+      itens.forEach((item) => {
+        let li = document.createElement('li');
+        li.setAttribute('id', 'item-' + item.id);
+
+        let checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+
+        let span = document.createElement('span');
+        span.innerHTML = item.texto;
+
+        let deleteButton = document.createElement('button');
+        deleteButton.innerHTML = 'Excluir';
+        deleteButton.setAttribute('onclick', `handleExcluirItem(${item.id})`);
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteButton);
+
+        listaItens.appendChild(li);
+      });
+    };
+
+    const copiarUrl = () => {
+      elementoInputUrl.select();
+      elementoInputUrl.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+    };
+
+    elementoInputUrl.value = window.location.href;
+  </script>
 </body>
 
 </html>
