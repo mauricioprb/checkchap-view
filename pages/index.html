@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CheckChap: Crie checklists de forma ágil e intuitiva</title>
+  <link
+    href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAFvMCgCrzAoA78wKAKvGBQBPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwKAPvMCgD/zAoA/8wKAPPMCgD/zAoA/8wKQLnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwKASfMCgD/zAoBG8AAAAAAAAAAAAAAAAwKQRoMCgD/zAoAo8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAE/MCgD/zAoBG8AAAAAAAAAAAAAAAAAAAAAAAAAADApA1gwKAOvGBQCLwAAAAAAAAAAAAAAAAAAAAAAAAAAMCgCjzAoA/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKPgQPAAAAADAoA68wKAPvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQeQivkHkI/0k8BDcwKASfMCgD/xgQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAAvAAAAAAAAAAAAAAAAkHoI95B5CP+QeAhvGBQCMDAoA/8wKAK3AAAAAAAAAAAAAAAAAAAAAAAAAAAwKAO/MCgD/xgUAl8AAAAAkHwMR5B5CP+QeQj/kHoI9wAAAAAwKAPPMCgD/zApAscZFAAfGRUADxkUAB8wKAKPMCgD/zAoA88AAAAAAAAAAJB5CN+QeQjfj3kIgJB5CP+ReQiXAAAAADAoA88wKAP/MCgD/zAoA/8wKAP/MCgD/zAoA78AAAAAAAAAAAAAAACQeQj/j3cJOAAAAACQeQjfkHkI/5B4CacAAAAAGBQCXzApBocwKASfMCcEjxgUAk8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJB5CdeQeQj/kHoI95F4B39IPAVHSDwEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAj3UMSJB5CL+QeQj/kHkI/5F5CJ8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASDwEIEg9BF9JPQQfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP+PAAD+AwAA/PkAAP39AAD5/wAA+f8AAMn/AADM+QAAxHEAAIIDAACxjwAA+P8AAP4fAAD//wAA//8AAA=="
+    rel="icon" type="image/x-icon" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -21,10 +24,8 @@
       </div>
       <form action="/url" method="post" class="mt-4 flex flex-col md:flex-row mx-auto">
         <div class="flex">
-          <span
-            class="h-10 inline-flex items-center md:w-auto px-3 text-sm text-teal-700 font-semibold bg-teal-100 border border-r-0 border-teal-100 rounded-l-md mb-2 md:mb-0">
-            checkchap.tech/
-          </span>
+          <span id="url-span"
+            class="h-10 inline-flex items-center md:w-auto px-3 text-sm text-teal-700 font-semibold bg-teal-100 border border-r-0 border-teal-100 rounded-l-md mb-2 md:mb-0"></span>
           <input type="text" name="nome" required
             class="w-full md:w-96 h-10 md:mr-3 rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 text-sm p-2 md:h-auto"
             placeholder="link único para a página">
@@ -63,6 +64,13 @@
       <script>document.write(new Date().getFullYear())</script>
     </p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let urlSpan = document.getElementById('url-span');
+      let url = window.location.href.replace(/^(https?:\/\/)/, '');
+      urlSpan.textContent = url;
+    });
+  </script>
 </body>
 
 </html>
