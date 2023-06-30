@@ -3,114 +3,136 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="tituloPagina">CheckChap: Tarefa Criada com Sucesso!</title>
+  <title th:text="${tituloTarefa} ? ${tituloTarefa} : 'CheckChap: Nova tarefa criada!'"></title>
   <link
     href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAFvMCgCrzAoA78wKAKvGBQBPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwKAPvMCgD/zAoA/8wKAPPMCgD/zAoA/8wKQLnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwKASfMCgD/zAoBG8AAAAAAAAAAAAAAAAwKQRoMCgD/zAoAo8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAE/MCgD/zAoBG8AAAAAAAAAAAAAAAAAAAAAAAAAADApA1gwKAOvGBQCLwAAAAAAAAAAAAAAAAAAAAAAAAAAMCgCjzAoA/8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABKPgQPAAAAADAoA68wKAPvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQeQivkHkI/0k8BDcwKASfMCgD/xgQAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYFAAvAAAAAAAAAAAAAAAAkHoI95B5CP+QeAhvGBQCMDAoA/8wKAK3AAAAAAAAAAAAAAAAAAAAAAAAAAAwKAO/MCgD/xgUAl8AAAAAkHwMR5B5CP+QeQj/kHoI9wAAAAAwKAPPMCgD/zApAscZFAAfGRUADxkUAB8wKAKPMCgD/zAoA88AAAAAAAAAAJB5CN+QeQjfj3kIgJB5CP+ReQiXAAAAADAoA88wKAP/MCgD/zAoA/8wKAP/MCgD/zAoA78AAAAAAAAAAAAAAACQeQj/j3cJOAAAAACQeQjfkHkI/5B4CacAAAAAGBQCXzApBocwKASfMCcEjxgUAk8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJB5CdeQeQj/kHoI95F4B39IPAVHSDwEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAj3UMSJB5CL+QeQj/kHkI/5F5CJ8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASDwEIEg9BF9JPQQfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP+PAAD+AwAA/PkAAP39AAD5/wAA+f8AAMn/AADM+QAAxHEAAIIDAACxjwAA+P8AAP4fAAD//wAA//8AAA=="
     rel="icon" type="image/x-icon" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script th:inline="javascript">
+    let nomeUrl = "[[${nome}]]";
+
+    if (!nomeUrl) {
+      let url = window.location.href.replace("/tarefa", "");
+      window.history.pushState("", "", url);
+    }
+  </script>
 </head>
 
-<body>
-  <div>
-    <h2 id="tituloLista" onclick="handleTituloClique()"></h2>
-    <div>
-      <input type="text" id="inputTitulo" placeholder="Definir título" onblur="handleTituloSair()"
-        onkeydown="handleTituloPressionarTecla()" />
-    </div>
-    <ul id="listaItens">
-    </ul>
-    <div>
-      <input id="inputItem" type="text" onkeydown="handleAdicionarItem(event)" placeholder="Adicionar item">
+<body class="bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-lg p-8 shadow-sm">
+      <form th:action="@{{id}(id=${id})}" method="post">
+        <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="id" th:value="${id}" />
+        <input type="text" name="titulo" value="" th:value="${tituloTarefa}" placeholder="Defina um título"
+          onkeydown="verificarEnter(event)" autocomplete="off" maxlength="23"
+          class="w-full border-none focus:outline-none outline-none text-4xl font-medium mb-4 h-full">
+      </form>
+      <div id="checklistItemsContainer">
+        <!-- Iterar sobre os itens e renderizá-los -->
+        <div th:each="item : ${itens}"
+          class="checklist-item flex items-center mb-1 justify-content-between border-b py-2">
+          <div class=" flex align-items-center">
+            <input type="checkbox" name="checklistItem" th:value="${item.item}" th:checked="${item.situacao}"
+              th:attr="data-idItem=${item.id}" onchange="enviarRequisicao(this)"
+              class="form-checkbox accent-teal-600 w-4 h-4">
+            <label th:text="${item.item}" class="ml-2 text-lg"></label>
+            <a th:href="@{/item/excluir/{idItem}(idItem=${item.id})}" class="ml-2">
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#495057" class="bi bi-x"
+            viewBox="0 0 16 16">
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+          </svg>
+          </a>
+        </div>
+        <form id="checklistForm" th:action="@{/item/criar/{idTarefa}(idTarefa=${id})}" method="post"
+          class="flex align-items-center mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#adb5bd" class="bi bi-plus"
+            viewBox="0 0 16 16">
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+          </svg>
+          <input type="text" name="nomeItem" id="checklistItemInput" placeholder="Adicionar item"
+            onkeyup="verificarEnter(event)" autocomplete="off"
+            class=" w-full border-none focus:outline-none outline-none ml-1">
+          <input type="button" id="addItemBtn" style="display: none;">
+        </form>
+
+      </div>
     </div>
   </div>
-  <div>
-    <input type="text" id="inputUrl" readonly>
-    <button onclick="copiarUrl()">Copiar URL</button>
-  </div>
+
   <script>
-    let editandoTitulo = false;
-    let titulo = '';
-    let itens = [];
-    let novoItem = '';
+    let verificarEnter = (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
 
-    let elementoTituloPagina = document.getElementById('tituloPagina');
-    let elementoTituloLista = document.getElementById('tituloLista');
-    let elementoInputTitulo = document.getElementById('inputTitulo');
-    let elementoInputUrl = document.getElementById('inputUrl');
+        const input = event.target;
+        const newItem = input.value.trim();
 
-    const handleTituloClique = () => {
-      editandoTitulo = true;
-      elementoTituloLista.style.display = 'none';
-      elementoInputTitulo.style.display = 'block';
-      elementoInputTitulo.value = titulo;
-      elementoInputTitulo.focus();
-    };
+        if (newItem !== "") {
+          const form = input.closest("form");
+          if (form.id === "checklistForm") {
+            const div = document.createElement("div");
+            div.className = "checklist-item flex items-center";
 
-    const handleTituloSair = () => {
-      editandoTitulo = false;
-      titulo = elementoInputTitulo.value;
-      elementoTituloPagina.innerHTML = titulo || 'Tarefa';
-      elementoTituloLista.innerHTML = titulo || 'Tarefa';
-      elementoTituloLista.style.display = 'block';
-      elementoInputTitulo.style.display = 'none';
-    };
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "checklistItem";
+            checkbox.value = newItem;
+            checkbox.className = "form-checkbox h-5 w-5 text-blue-500";
 
-    const handleTituloPressionarTecla = (event) => {
-      if (event.key === 'Enter') {
-        handleTituloSair();
-      }
-    };
+            const label = document.createElement("label");
+            label.appendChild(document.createTextNode(newItem));
+            label.className = "ml-2";
 
-    const handleAdicionarItem = (event) => {
-      if (event.key === 'Enter') {
-        let itemInput = document.getElementById('inputItem');
-        let textoItem = itemInput.value;
-        if (textoItem) {
-          let novoItem = { id: Date.now(), texto: textoItem };
-          itens.push(novoItem);
-          renderizarItens();
-          itemInput.value = '';
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "checklistItems";
+            hiddenInput.value = newItem;
+
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            div.appendChild(hiddenInput);
+
+            form.insertBefore(div, input);
+            input.value = "";
+            input.focus();
+
+            // Atualizar o valor do campo de entrada do checklist no formulário
+            const checklistItemInput = document.getElementById("checklistItemInput");
+            checklistItemInput.value = newItem;
+
+            // Acionar o botão de adicionar item
+            const addItemBtn = document.getElementById("addItemBtn");
+            addItemBtn.click();
+          } else {
+            event.preventDefault();
+
+            const form = event.target.closest("form");
+            form.submit();
+          }
         }
       }
     };
 
-    const handleExcluirItem = (itemId) => {
-      itens = itens.filter((item) => item.id !== itemId);
-      renderizarItens();
+    let enviarRequisicao = (checkbox) => {
+      let idItem = checkbox.getAttribute("data-idItem");
+      let situacao = checkbox.checked ? 1 : 0;
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "/item/alterarSituacao/" + idItem + "?situacao=" + situacao, true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // A requisição foi concluída com sucesso
+        }
+      };
+      xhr.send();
     };
-
-    const renderizarItens = () => {
-      let listaItens = document.getElementById('listaItens');
-      listaItens.innerHTML = '';
-      itens.forEach((item) => {
-        let li = document.createElement('li');
-        li.setAttribute('id', 'item-' + item.id);
-
-        let checkbox = document.createElement('input');
-        checkbox.setAttribute('type', 'checkbox');
-
-        let span = document.createElement('span');
-        span.innerHTML = item.texto;
-
-        let deleteButton = document.createElement('button');
-        deleteButton.innerHTML = 'Excluir';
-        deleteButton.setAttribute('onclick', `handleExcluirItem(${item.id})`);
-
-        li.appendChild(checkbox);
-        li.appendChild(span);
-        li.appendChild(deleteButton);
-
-        listaItens.appendChild(li);
-      });
-    };
-
-    const copiarUrl = () => {
-      elementoInputUrl.select();
-      elementoInputUrl.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-    };
-
-    elementoInputUrl.value = window.location.href;
   </script>
 </body>
 
